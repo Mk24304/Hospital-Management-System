@@ -1,4 +1,3 @@
-[Hospital_Mgt_System.zip](https://github.com/user-attachments/files/24940269/Hospital_Mgt_System.zip)
 # Hospital-Management-System
 Group members-
 
@@ -12,6 +11,13 @@ Group members-
 
 Project File-
 
+[Hospital_Mgt_System.zip](https://github.com/user-attachments/files/24940269/Hospital_Mgt_System.zip)
+
+Project Reports-
+
+[OOP2 Project Report(1) 1.docx](https://github.com/user-attachments/files/24940393/OOP2.Project.Report.1.1.docx)
+
+[OOP2 FINAL (1).pdf](https://github.com/user-attachments/files/24940391/OOP2.FINAL.1.pdf)
 
 
 
