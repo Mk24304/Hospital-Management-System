@@ -131,7 +131,7 @@ namespace Hospital_Mgt_System
                  try
                 {
                     con.Open();
-                    string sql = "DELETE FROM Appoinment WHERE Appt_Id=@ApptId";
+                    string sql = "DELETE FROM Appointment WHERE Appt_Id=@ApptId";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@ApptId", txtApptId.Text);
                     cmd.ExecuteNonQuery();
@@ -194,7 +194,7 @@ namespace Hospital_Mgt_System
                 txtApptId.Text = row.Cells["Appt_Id"].Value.ToString();
                 txtDoctorId.Text = row.Cells["Doc_Id"].Value.ToString();
                 txtPatId.Text = row.Cells["pt_Id"].Value.ToString();
-                comboBoxAppt.Text = row.Cells["app_status"].Value.ToString();
+                comboBoxAppt.Text = row.Cells["appt_status"].Value.ToString();
                 if (row.Cells["Date_Time"].Value== null)
                 {
                     dtpDateTime.Value = Convert.ToDateTime(row.Cells["Date_Time"].Value);

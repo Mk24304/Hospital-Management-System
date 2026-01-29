@@ -78,12 +78,12 @@ namespace Hospital_Mgt_System
                         }
                         else
                         {
-                            MessageBox.Show("Invalid Role");
+                            MessageBox.Show("Select Role");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Select Role");
+                        MessageBox.Show("Invalid Role.");
                     }
 
                 }

@@ -63,7 +63,7 @@ namespace Hospital_Mgt_System
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            string connString = "Data Source=.\\SQLEXPRESS; Initial Catalog=Loginform; Integrated Security=Trus; Encrypt=True; TrustServerCertificate=True";
+            string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Loginform;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
             SqlConnection con = new SqlConnection(connString);
             con.Open();
             string countquery = "Select Count(*) from Appointment where Appt_Id=@Appt_Id";
@@ -72,20 +72,22 @@ namespace Hospital_Mgt_System
             int count = (int)countcmd.ExecuteScalar();
             if (count <= 0)
             {
-                MessageBox.Show("No Appointment with this Id has been yet Added in the Appointment list. Please add the patient in the list first", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("No Appointment with this Id has been yet Added in the Appointment list.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             try
             {
-                string sql = "UPDATE Appointment SET appt_statuss=@appt_status ,Date_Time=@Date_Time WHERE Appt_Id=@Appt_Id";
+                string sql = "UPDATE Appointment SET Doc_Id=@Doc_Id, appt_status=@appt_status ,Date_Time=@Date_Time WHERE Appt_Id=@Appt_Id";
                 using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
+                    cmd.Parameters.AddWithValue("@Doc_Id", txtDocId.Text);
                     cmd.Parameters.AddWithValue("@Appt_Id", txtApptId.Text);
                     cmd.Parameters.AddWithValue("@appt_status", comboBoxAppt.Text);
                     cmd.Parameters.AddWithValue("@Date_Time", dtpDateTime.Value);
                     cmd.ExecuteNonQuery();
-                    MessageBox.Show("Department Updated!");
+
+                    MessageBox.Show("Appointment Updated!");
                     RefreshGrid_Patient();
                     RefreshGrid_Appt();
                 }
@@ -101,7 +103,7 @@ namespace Hospital_Mgt_System
                 try
                 {
                     con.Open();
-                    string sql = "DELETE FROM Appoinment WHERE Appt_Id=@ApptId";
+                    string sql = "DELETE FROM Appointment WHERE Appt_Id=@ApptId";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@ApptId", txtApptId.Text);
                     cmd.ExecuteNonQuery();
@@ -141,7 +143,7 @@ namespace Hospital_Mgt_System
             {
                 DataGridViewRow row = dgvAppt.Rows[e.RowIndex];
                 txtApptId.Text = row.Cells["Appt_Id"].Value.ToString();
-                comboBoxAppt.Text = row.Cells["app_status"].Value.ToString();
+                comboBoxAppt.Text = row.Cells["appt_status"].Value.ToString();
                 if (row.Cells["Date_Time"].Value == null)
                 {
                     dtpDateTime.Value = Convert.ToDateTime(row.Cells["Date_Time"].Value);

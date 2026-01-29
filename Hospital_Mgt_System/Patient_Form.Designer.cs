@@ -53,6 +53,9 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.dgvPatient = new System.Windows.Forms.DataGridView();
             this.dgvAppt = new System.Windows.Forms.DataGridView();
+            this.btnAddAppt = new System.Windows.Forms.Button();
+            this.btnUpdateAppt = new System.Windows.Forms.Button();
+            this.btnPay = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppt)).BeginInit();
             this.SuspendLayout();
@@ -194,18 +197,17 @@
             // 
             this.dtpDateTime.CustomFormat = "MM/dd/yyyy hh:mm:tt";
             this.dtpDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpDateTime.Location = new System.Drawing.Point(149, 227);
+            this.dtpDateTime.Location = new System.Drawing.Point(120, 289);
             this.dtpDateTime.Name = "dtpDateTime";
             this.dtpDateTime.ShowUpDown = true;
             this.dtpDateTime.Size = new System.Drawing.Size(200, 28);
             this.dtpDateTime.TabIndex = 42;
-            this.dtpDateTime.ValueChanged += new System.EventHandler(this.dtpDateTime_ValueChanged);
             // 
             // txtDateTime
             // 
             this.txtDateTime.AutoSize = true;
             this.txtDateTime.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDateTime.Location = new System.Drawing.Point(12, 230);
+            this.txtDateTime.Location = new System.Drawing.Point(12, 296);
             this.txtDateTime.Name = "txtDateTime";
             this.txtDateTime.Size = new System.Drawing.Size(90, 19);
             this.txtDateTime.TabIndex = 41;
@@ -215,51 +217,54 @@
             // 
             this.btnShow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.btnShow.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShow.Location = new System.Drawing.Point(746, 270);
+            this.btnShow.Location = new System.Drawing.Point(823, 209);
             this.btnShow.Name = "btnShow";
             this.btnShow.Size = new System.Drawing.Size(127, 47);
             this.btnShow.TabIndex = 43;
             this.btnShow.Text = "Show";
             this.btnShow.UseVisualStyleBackColor = false;
+            this.btnShow.Click += new System.EventHandler(this.btnShow_Click);
             // 
             // btnExit
             // 
             this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.btnExit.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExit.Location = new System.Drawing.Point(591, 272);
+            this.btnExit.Location = new System.Drawing.Point(662, 212);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(119, 45);
             this.btnExit.TabIndex = 48;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // btnClear
             // 
             this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.btnClear.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.Location = new System.Drawing.Point(446, 272);
+            this.btnClear.Location = new System.Drawing.Point(512, 211);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(119, 45);
             this.btnClear.TabIndex = 47;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnDelete
             // 
             this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.btnDelete.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelete.Location = new System.Drawing.Point(295, 272);
+            this.btnDelete.Location = new System.Drawing.Point(312, 211);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(133, 45);
+            this.btnDelete.Size = new System.Drawing.Size(156, 45);
             this.btnDelete.TabIndex = 46;
-            this.btnDelete.Text = "Delete";
+            this.btnDelete.Text = "Delete Booking";
             this.btnDelete.UseVisualStyleBackColor = false;
             // 
             // btnUpdate
             // 
             this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.btnUpdate.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.Location = new System.Drawing.Point(141, 272);
+            this.btnUpdate.Location = new System.Drawing.Point(144, 209);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(126, 45);
             this.btnUpdate.TabIndex = 45;
@@ -272,7 +277,7 @@
             this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.btnAdd.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnAdd.Location = new System.Drawing.Point(12, 272);
+            this.btnAdd.Location = new System.Drawing.Point(16, 212);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(112, 45);
             this.btnAdd.TabIndex = 44;
@@ -283,22 +288,60 @@
             // dgvPatient
             // 
             this.dgvPatient.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPatient.Location = new System.Drawing.Point(-1, 323);
+            this.dgvPatient.Location = new System.Drawing.Point(-10, 378);
             this.dgvPatient.Name = "dgvPatient";
             this.dgvPatient.RowHeadersWidth = 51;
             this.dgvPatient.RowTemplate.Height = 24;
-            this.dgvPatient.Size = new System.Drawing.Size(971, 163);
+            this.dgvPatient.Size = new System.Drawing.Size(971, 136);
             this.dgvPatient.TabIndex = 50;
             // 
             // dgvAppt
             // 
             this.dgvAppt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAppt.Location = new System.Drawing.Point(-1, 482);
+            this.dgvAppt.Location = new System.Drawing.Point(-1, 510);
             this.dgvAppt.Name = "dgvAppt";
             this.dgvAppt.RowHeadersWidth = 51;
             this.dgvAppt.RowTemplate.Height = 24;
-            this.dgvAppt.Size = new System.Drawing.Size(980, 423);
+            this.dgvAppt.Size = new System.Drawing.Size(980, 395);
             this.dgvAppt.TabIndex = 49;
+            this.dgvAppt.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAppt_CellClick);
+            // 
+            // btnAddAppt
+            // 
+            this.btnAddAppt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.btnAddAppt.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddAppt.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnAddAppt.Location = new System.Drawing.Point(343, 272);
+            this.btnAddAppt.Name = "btnAddAppt";
+            this.btnAddAppt.Size = new System.Drawing.Size(177, 45);
+            this.btnAddAppt.TabIndex = 51;
+            this.btnAddAppt.Text = "Add Booking";
+            this.btnAddAppt.UseVisualStyleBackColor = false;
+            this.btnAddAppt.Click += new System.EventHandler(this.btnAddAppt_Click);
+            // 
+            // btnUpdateAppt
+            // 
+            this.btnUpdateAppt.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.btnUpdateAppt.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateAppt.Location = new System.Drawing.Point(526, 272);
+            this.btnUpdateAppt.Name = "btnUpdateAppt";
+            this.btnUpdateAppt.Size = new System.Drawing.Size(162, 45);
+            this.btnUpdateAppt.TabIndex = 52;
+            this.btnUpdateAppt.Text = "Update  Booking";
+            this.btnUpdateAppt.UseVisualStyleBackColor = false;
+            this.btnUpdateAppt.Click += new System.EventHandler(this.btnUpdateAppt_Click);
+            // 
+            // btnPay
+            // 
+            this.btnPay.BackColor = System.Drawing.Color.MistyRose;
+            this.btnPay.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPay.Location = new System.Drawing.Point(713, 270);
+            this.btnPay.Name = "btnPay";
+            this.btnPay.Size = new System.Drawing.Size(195, 45);
+            this.btnPay.TabIndex = 53;
+            this.btnPay.Text = "Payment";
+            this.btnPay.UseVisualStyleBackColor = false;
+            this.btnPay.Click += new System.EventHandler(this.btnPay_Click);
             // 
             // Patient_Form
             // 
@@ -306,6 +349,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(962, 653);
+            this.Controls.Add(this.btnPay);
+            this.Controls.Add(this.btnUpdateAppt);
+            this.Controls.Add(this.btnAddAppt);
             this.Controls.Add(this.dgvPatient);
             this.Controls.Add(this.dgvAppt);
             this.Controls.Add(this.btnShow);
@@ -332,10 +378,10 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Patient_Form";
             this.Text = "Patient Dashboard";
-            this.Load += new System.EventHandler(this.Patient_Form_Load_1);
+            this.Load += new System.EventHandler(this.Patient_Form_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppt)).EndInit();
             this.ResumeLayout(false);
@@ -370,5 +416,8 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.DataGridView dgvPatient;
         private System.Windows.Forms.DataGridView dgvAppt;
+        private System.Windows.Forms.Button btnAddAppt;
+        private System.Windows.Forms.Button btnUpdateAppt;
+        private System.Windows.Forms.Button btnPay;
     }
 }

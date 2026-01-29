@@ -17,14 +17,12 @@ namespace Hospital_Mgt_System
         {
             InitializeComponent();
         }
-
         private void Patient_Form_Load(object sender, EventArgs e)
         {
             RefreshGrid_Appt();
             RefreshGrid_Patient();
         }
-
-        private void RefreshGrid()
+        private void RefreshGrid_Patient()
         {
             string conString = "Data Source =.\\SQLEXPRESS; Initial Catalog = Loginform; Integrated Security = True; Encrypt = True; TrustServerCertificate = True";
             SqlConnection con = new SqlConnection(conString);
@@ -42,6 +40,25 @@ namespace Hospital_Mgt_System
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+        private void RefreshGrid_Appt()
+        {
+            string conString = "Data Source =.\\SQLEXPRESS; Initial Catalog = Loginform; Integrated Security = True; Encrypt = True; TrustServerCertificate = True";
+            SqlConnection con = new SqlConnection(conString);
+            try
+            {
+                con.Open();
+                string query = "Select * from Appointment";
+                SqlDataAdapter sda = new SqlDataAdapter(query, con);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                dgvAppt.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -59,38 +76,57 @@ namespace Hospital_Mgt_System
             con.Open();
             try
             {
-                string sql = "INSERT INTO Patient(Id, Name, Bloodgroup, Condition, Phoneno, Gender, Address)" +
-                "VALUES (@Id, @Name, @Bloodgroup, @Condition, @Phoneno, @Gender, @Address)";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@Id", txtId.Text);
-                cmd.Parameters.AddWithValue("@Name", txtFullName.Text);
-                cmd.Parameters.AddWithValue("@Bloodgroup", txtBldGrp.Text);
-                cmd.Parameters.AddWithValue("@Condition", txtCondition.Text);
-                cmd.Parameters.AddWithValue("@Phoneno", txtPhoneno.Text);
-                cmd.Parameters.AddWithValue("@Gender", comboBoxGender.Text);
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
                 string countquery = "Select Count(*) from logtable where Id=@Id";
                 SqlCommand countcmd = new SqlCommand(countquery, con);
                 countcmd.Parameters.AddWithValue("@Id", txtId.Text);
                 int count = (int)countcmd.ExecuteScalar();
                 if (count <= 0)
                 {
-                    MessageBox.Show("The Patient has not no signed in", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("The Patient has not signed in", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
                 }
-
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Patient Added Successfully!");
-                string sql_appt= "Insert into Appointment(Appt_Id,pt_Id Date_Time) " +
-                                 "Values (NEXT VALUE FOR Appt_Seq,@pt_Id,@Date_Time)";
-                SqlCommand cmd_appt = new SqlCommand(sql_appt, con);
-                cmd_appt.Parameters.AddWithValue("@pt_Id", txtId.Text);
-                cmd_appt.Parameters.AddWithValue("@Date_Time", dtpDateTime.Value);
-                cmd_appt.ExecuteNonQuery();
-                MessageBox.Show("Appointment time Added Successfully!");
-
-                RefreshGrid_Patient();
-                RefreshGrid_Appt();
-                ClearFields();
+                string countquery_pt = "Select Count(*) from patient where Id=@Id";
+                SqlCommand countcmd_pt = new SqlCommand(countquery_pt, con);
+                countcmd_pt.Parameters.AddWithValue("@Id", txtId.Text);
+                int count_pt = (int)countcmd_pt.ExecuteScalar();
+                if (count_pt ==1)
+                {
+                    MessageBox.Show("Your Details are already added in the list by the admin. You can only update delete  and book date and time", "Info", MessageBoxButtons.OK);
+                    return;
+                }
+                else
+                {
+                    string sql = "INSERT INTO Patient(Id, Name, Bloodgroup, Condition, Phoneno, Gender, Address)" +
+                    "VALUES (@Id, @Name, @Bloodgroup, @Condition, @Phoneno, @Gender, @Address)";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@Id", txtId.Text);
+                    cmd.Parameters.AddWithValue("@Name", txtFullName.Text);
+                    cmd.Parameters.AddWithValue("@Bloodgroup", txtBldGrp.Text);
+                    cmd.Parameters.AddWithValue("@Condition", txtCondition.Text);
+                    cmd.Parameters.AddWithValue("@Phoneno", txtPhoneno.Text);
+                    cmd.Parameters.AddWithValue("@Gender", comboBoxGender.Text);
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Patient Added Successfully!");
+                    RefreshGrid_Patient();
+                    RefreshGrid_Appt();
+                    ClearFields();
+                }
+                    /*string sql = "INSERT INTO Patient(Id, Name, Bloodgroup, Condition, Phoneno, Gender, Address)" +
+                    "VALUES (@Id, @Name, @Bloodgroup, @Condition, @Phoneno, @Gender, @Address)";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@Id", txtId.Text);
+                    cmd.Parameters.AddWithValue("@Name", txtFullName.Text);
+                    cmd.Parameters.AddWithValue("@Bloodgroup", txtBldGrp.Text);
+                    cmd.Parameters.AddWithValue("@Condition", txtCondition.Text);
+                    cmd.Parameters.AddWithValue("@Phoneno", txtPhoneno.Text);
+                    cmd.Parameters.AddWithValue("@Gender", comboBoxGender.Text);
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Patient Added Successfully!");
+                    RefreshGrid_Patient();
+                    RefreshGrid_Appt();
+                    ClearFields();*/
             }
             catch (Exception ex)
             {
@@ -121,17 +157,8 @@ namespace Hospital_Mgt_System
                 cmd.Parameters.AddWithValue("@Phoneno", txtPhoneno.Text);
                 cmd.Parameters.AddWithValue("@Gender", comboBoxGender.Text);
                 cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Record Updated!");
-                string sql_appt = "UPDATE Appointment SET Date_Time=@Date_Time WHERE pt_Id=@pt_Id";
-                SqlCommand cmd_appt = new SqlCommand(sql_appt, con);
-                cmd.Parameters.AddWithValue("@Date_Time", dtpDateTime.Value);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Appointment time Updated!");
-                RefreshGrid_Patient();
-                RefreshGrid_Appt();
-                ClearFields();
             }
             catch (Exception ex)
             {
@@ -141,7 +168,11 @@ namespace Hospital_Mgt_System
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtId.Text)) return;
+            if (string.IsNullOrEmpty(txtId.Text))
+            {
+                MessageBox.Show("Please enter the id.", "Input Error", MessageBoxButtons.OK);
+                return;
+            }
 
             string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Loginform;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
             SqlConnection con = new SqlConnection(connString);
@@ -151,10 +182,11 @@ namespace Hospital_Mgt_System
                 con.Open();
                 string sql = "DELETE FROM Appointment WHERE pt_Id=@pt_Id";
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@Id", txtId.Text);
+                cmd.Parameters.AddWithValue("@pt_Id", txtId.Text);
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Appointment Deleted.");
-                RefreshGrid();
+                RefreshGrid_Patient();
+                RefreshGrid_Appt();
                 ClearFields();
             }
             catch (Exception ex) { MessageBox.Show("Delete error: " + ex.Message); }
@@ -164,12 +196,11 @@ namespace Hospital_Mgt_System
         {
             ClearFields();
         }
-
         private void btnShow_Click(object sender, EventArgs e)
         {
-            RefreshGrid();
+            RefreshGrid_Appt();
+            RefreshGrid_Patient();
         }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             Form1 f = new Form1();
@@ -206,46 +237,12 @@ namespace Hospital_Mgt_System
             }
             return true;
         }
-        private void RefreshGrid_Patient()
-        {
-            string conString = "Data Source =.\\SQLEXPRESS; Initial Catalog = Loginform; Integrated Security = True; Encrypt = True; TrustServerCertificate = True";
-            SqlConnection con = new SqlConnection(conString);
-            try
-            {
-                con.Open();
-                string query = "Select * from Patient where Id=@Id";
-                SqlDataAdapter sda = new SqlDataAdapter(query, con);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                dgvPatient.DataSource = dt;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
-        }
-        private void RefreshGrid_Appt()
-        {
-            string conString = "Data Source =.\\SQLEXPRESS; Initial Catalog = Loginform; Integrated Security = True; Encrypt = True; TrustServerCertificate = True";
-            SqlConnection con = new SqlConnection(conString);
-            try
-            {
-                con.Open();
-                string query = "Select * from Appointment where parId=@pat_Id";
-                SqlDataAdapter sda = new SqlDataAdapter(query, con);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                dgvAppt.DataSource = dt;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
-        }
+
+
 
         private void dgvPatient_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && e.RowIndex < dgvPatient.Rows.Count)
             {
                 DataGridViewRow row = dgvPatient.Rows[e.RowIndex];
                 txtId.Text = row.Cells["Id"].Value.ToString();
@@ -258,15 +255,102 @@ namespace Hospital_Mgt_System
             }
         }
 
-        private void dtpDateTime_ValueChanged(object sender, EventArgs e)
+        private void dgvAppt_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0 && e.RowIndex < dgvAppt.Rows.Count)
+            {
+                DataGridViewRow row = dgvAppt.Rows[e.RowIndex];
+ ;
+                if (row.Cells["Date_Time"].Value != null)
+                {
+                    dtpDateTime.Value = Convert.ToDateTime(row.Cells["Date_Time"].Value);
+                }
 
+            }
         }
 
-        private void Patient_Form_Load_1(object sender, EventArgs e)
+        private void btnAddAppt_Click(object sender, EventArgs e)
         {
-            RefreshGrid_Appt();
-            RefreshGrid_Patient();
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                MessageBox.Show("Please enter the id.", "Input Error", MessageBoxButtons.OK);
+                return;
+            }
+            if (dtpDateTime.Value == null)
+            {
+                MessageBox.Show("Please Select a time", "Input Error", MessageBoxButtons.OK);
+                return;
+            }
+            string connString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Loginform;Integrated Security=True;Encrypt=True;TrustServerCertificate=True";
+            SqlConnection con = new SqlConnection(connString);
+            con.Open();
+            try
+            {
+                string sql_appt = "Insert into Appointment(Appt_Id,pt_Id,Date_Time) " +
+                                "Values (NEXT VALUE FOR Appt_appt_Id,@pt_Id,@Date_Time)";
+                SqlCommand cmd_appt = new SqlCommand(sql_appt, con);
+                cmd_appt.Parameters.AddWithValue("@pt_Id", txtId.Text);
+                cmd_appt.Parameters.AddWithValue("@Date_Time", dtpDateTime.Value);
+                cmd_appt.ExecuteNonQuery();
+                MessageBox.Show("Appointment time Added Successfully!");
+                RefreshGrid_Patient();
+                RefreshGrid_Appt();
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Add failed:" + ex.Message);
+            }
+        }
+
+        private void btnUpdateAppt_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                MessageBox.Show("Please enter the id.", "Input Error", MessageBoxButtons.OK);
+                return;
+            }
+            if (dtpDateTime.Value == null)
+            {
+                MessageBox.Show("Please Select a time", "Input Error", MessageBoxButtons.OK);
+                return;
+            }
+            string connString = "Data Source =.\\SQLEXPRESS; Initial Catalog = Loginform; Integrated Security = True; Encrypt = True; TrustServerCertificate = True";
+            SqlConnection con = new SqlConnection(connString);
+            con.Open();
+            try
+            {
+                string sql_appt = "UPDATE Appointment SET Date_Time=@Date_Time WHERE pt_Id=@pt_Id";
+                SqlCommand cmd_appt = new SqlCommand(sql_appt, con);
+                cmd_appt.Parameters.AddWithValue("@pt_Id", txtId.Text);
+                cmd_appt.Parameters.AddWithValue("@Date_Time", dtpDateTime.Value);
+                cmd_appt.ExecuteNonQuery();
+                MessageBox.Show("Appointment time Updated!");
+                RefreshGrid_Patient();
+                RefreshGrid_Appt();
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Update error." + ex.Message);
+
+            }
+        }
+
+        private void btnPay_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtId.Text))
+            {
+                MessageBox.Show("Please enter your Patient Id", "info",MessageBoxButtons.OK);
+                return;
+            }
+            else
+            {
+                Payment p_form = new Payment(txtId.Text);
+                p_form.Show();
+                this.Hide();
+            }
+ 
         }
     }
 }
